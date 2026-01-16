@@ -1,7 +1,5 @@
 const SPEC_HEAT_H2O: number = 4186; // J/(kg·K) Specific heat capacity of water
 const DENSITY_H2O: number = 1; // kg/L
-// Programmer-defined constant for tank mass in kg, equivalent to volume in L
-const TANK_MASS: number = 100;
 
 // These aren't helpful or necessary from the compilation standpoint,
 // but they help readability and thinking about the physical equations.
@@ -18,10 +16,16 @@ type LPerSec = number;
  * to a solar cell, heated, and returned to the tank.
  */
 export type SolarTankSystem = {
+  /** Current temperature of the tank- simulated */
   tankTemp: degC;
+  /** Current solar power input- user-defined */
   solarPower: Watts;
+  /** Temperature of water leaving the solar cell- simulated */
   solarOutTemp: degC;
+  /** Flow rate of water through the solar cell- user-defined */
   flowRate: LPerSec;
+  /** Mass of water in the tank- user-defined */
+  tankMass: kg;
 };
 
 /**
@@ -60,12 +64,13 @@ export function stepTankSystem(system: SolarTankSystem, seconds: number): SolarT
   const massFlow: kg = system.flowRate * seconds * DENSITY_H2O;
   const energyIn: Joules = system.solarPower * seconds; // Total energy absorbed over the time step
   const solarOutTemp: degC = solarCellHeat(system.tankTemp, energyIn, massFlow);
-  const tempChange: degC = tankTempChange(system.tankTemp, TANK_MASS, massFlow, solarOutTemp);
+  const tempChange: degC = tankTempChange(system.tankTemp, system.tankMass, massFlow, solarOutTemp);
 
   return {
     tankTemp: system.tankTemp + tempChange,
     solarPower: system.solarPower,
     solarOutTemp: solarOutTemp,
     flowRate: system.flowRate,
+    tankMass: system.tankMass,
   };
 }
