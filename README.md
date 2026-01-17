@@ -1,6 +1,14 @@
-# Getting Started with Create React App
+# Heat Transfer Simulation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Physical Assumptions
+
+- The pump is perfectly efficient and loses no energy to heat.
+- The increase in temperature of the water due to pressure increase after pumping is negligible (and neglected in this simulation).
+- The solar cell is perfectly efficient and all energy is transferred into the water.
+- The water circuit is pre-primed with water, so the tank loses no volume to it.
+- The entire system is closed and loses no heat to the outside environment.
+
+# Package Info
 
 ## Available Scripts
 
