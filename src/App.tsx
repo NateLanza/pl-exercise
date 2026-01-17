@@ -8,7 +8,11 @@ const DEFAULT_POWER: number = 500; // Watts
 const DEFAULT_FLOW: number = 1; // L/s
 const DEFAULT_TANK_MASS: number = 100; // kg
 
+const STEP = .1; // seconds
+
 function App() {
+  const [time, setTime] = useState<number>(0);
+
   const [systemState, setSystemState] = useState<SolarTankSystem>({
     tankTemp: DEFAULT_TEMP,
     solarPower: DEFAULT_POWER,
@@ -25,7 +29,8 @@ function App() {
       <p>Flow Rate: {systemState.flowRate} L/s</p>
       <button onClick={() => {
         // Advance the system by one second when the button is clicked
-        setSystemState(stepTankSystem(systemState, 1));
+        setSystemState(stepTankSystem(systemState, STEP));
+        setTime(time + STEP);
       }}>Step</button>
     </div>
   );
