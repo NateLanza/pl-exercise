@@ -33,7 +33,9 @@ function App() {
         setSystemState(stepTankSystem(systemState, STEP));
         setTime(time + STEP);
       }}>Step</button>
-      <SvgBase />
+      <div style={{textAlign: 'right'}}>
+        <SvgBase />
+      </div>
     </div>
   );
 }
