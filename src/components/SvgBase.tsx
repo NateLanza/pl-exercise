@@ -1,35 +1,37 @@
 import React from 'react';
 import { Thermometer } from './Thermometer';
 import { Slider } from './Slider';
+import { TITLE_SIZE, LABEL_SIZE, THERMOMETER_HEIGHT } from './constants';
 
 interface SvgBaseProps {
   // Add your props here
 }
 
-const THERMOMETER_HEIGHT: number = 300;
-const HEADER_SIZE = 15;
-const LABEL_SIZE = 13;
-
 export const SvgBase: React.FC<SvgBaseProps> = (props) => {
   return (
     <svg width="300" height="500">
-      <Slider
-        x={1}
-        y={1}
-        value={50}
-        min={0}
-        max={100}
-        width={200}
-        height={20}
-        color="green"
-        onChange={(value) => {
-          console.log("Slider changed to: ", value);
-        }} 
-      />
-      <g transform="translate(0, 150)">
+      <g>
+        {/* Control sliders */}
+        <Slider
+          x={50}
+          y={20}
+          value={50}
+          min={0}
+          max={100}
+          width={200}
+          height={20}
+          color="yellow"
+          title="Solar Cell Power"
+          unit="W"
+          onChange={(value) => {
+            console.log("Slider changed to: ", value);
+          }} 
+        />
+      </g>
+      <g transform="translate(0, 100)">
         {/* Group for solar cell thermometer */}
         <g transform="translate(50, 0)">
-          <text y={10} x={13} fontSize={HEADER_SIZE}>Cell</text>
+          <text y={10} x={13} fontSize={TITLE_SIZE}>Cell</text>
           <Thermometer
             svgX={0} 
             svgY={20} 
@@ -43,7 +45,7 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
         </g>
         {/* Group for tank thermometer and scale */}
         <g transform="translate(150, 0)">
-          <text y={10} x={36} fontSize={HEADER_SIZE}>Tank</text>
+          <text y={10} x={36} fontSize={TITLE_SIZE}>Tank</text>
           <g transform="translate(0, 20)">
             <Thermometer // For the tank temperature
               svgX={0} 
