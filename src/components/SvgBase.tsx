@@ -27,6 +27,21 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
             console.log("Slider changed to: ", value);
           }} 
         />
+        <Slider
+          x={50}
+          y={70}
+          value={25}
+          min={0}
+          max={100}
+          width={200}
+          height={20}
+          color="lightblue"
+          title="Pump Flow Rate"
+          unit="L/s"
+          onChange={(value) => {
+            console.log("Slider changed to: ", value);
+          }} 
+        />
       </g>
       <g transform="translate(0, 100)">
         {/* Group for solar cell thermometer */}

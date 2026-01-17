@@ -94,6 +94,22 @@ export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min,
         fill={color}
         cursor="col-resize"
       />
+      {/* Tick marks at 1/10 intervals */}
+      {Array.from({ length: 11 }).map((_, i) => {
+        const tickX = (i / 10) * (width - 2) + 1; // Slight adjustments because of stroke width
+        let tickHeight = 4; // 1/10 intervals
+        if (i % 2 === 0) tickHeight = 6; // 1/5 intervals
+        if (i % 5 === 0) tickHeight = 10; // start, middle, end
+        
+        return (
+          <g key={i}>
+            {/* Top tick */}
+            {/* <line x1={tickX} y1={1} x2={tickX} y2={tickHeight} stroke="black" strokeWidth={1} /> */}
+            {/* Bottom tick */}
+            <line x1={tickX} y1={height} x2={tickX} y2={height - tickHeight} stroke="black" strokeWidth={1} />
+          </g>
+        );
+      })}
     </g>
   );
 };
