@@ -30,8 +30,6 @@ const BORDER_WIDTH: number = 2;
  */
 export const Thermometer: React.FC<ThermometerProps> = ({ svgX, svgY, width, height, borderRadius = 0, minTemp, maxTemp, currentTemp, background }) => {
 
-  const innerWidth = width - 2 * BORDER_WIDTH;
-  const innerHeight = height - 2 * BORDER_WIDTH;
   const percentFilled = (currentTemp - minTemp) / (maxTemp - minTemp) ;
 
   return (
