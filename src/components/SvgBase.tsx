@@ -1,7 +1,7 @@
 import React from 'react';
 import { Thermometer } from './Thermometer';
 import { Slider } from './Slider';
-import { TITLE_SIZE, LABEL_SIZE, THERMOMETER_HEIGHT } from './constants';
+import { TITLE_SIZE, LABEL_SIZE, THERMOMETER_HEIGHT, WATER_COLOR } from './constants';
 
 interface SvgBaseProps {
   // Add your props here
@@ -9,15 +9,15 @@ interface SvgBaseProps {
 
 export const SvgBase: React.FC<SvgBaseProps> = (props) => {
   return (
-    <svg width="300" height="500">
+    <svg width="300" height="600">
+      {/* Control sliders */}
       <g>
-        {/* Control sliders */}
         <Slider
           x={50}
-          y={20}
+          y={0}
           value={50}
           min={0}
-          max={100}
+          max={1000}
           width={200}
           height={20}
           color="yellow"
@@ -29,13 +29,13 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
         />
         <Slider
           x={50}
-          y={70}
+          y={100}
           value={25}
-          min={0}
-          max={100}
+          min={1}
+          max={10}
           width={200}
           height={20}
-          color="lightblue"
+          color={WATER_COLOR}
           title="Pump Flow Rate"
           unit="L/s"
           onChange={(value) => {
@@ -43,13 +43,13 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
           }} 
         />
       </g>
-      <g transform="translate(0, 100)">
+      {/* Group for both thermometers */}
+      <g transform="translate(0, 200)">
         {/* Group for solar cell thermometer */}
         <g transform="translate(50, 0)">
-          <text y={10} x={13} fontSize={TITLE_SIZE}>Cell</text>
           <Thermometer
             svgX={0} 
-            svgY={20} 
+            svgY={0} 
             width={50} 
             height={THERMOMETER_HEIGHT} 
             minTemp={0}
@@ -57,11 +57,11 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
             currentTemp={45} 
             borderRadius={10} 
           />
+          <text y={THERMOMETER_HEIGHT + 20} x={13} fontSize={TITLE_SIZE}>Cell</text>
         </g>
         {/* Group for tank thermometer and scale */}
         <g transform="translate(150, 0)">
-          <text y={10} x={36} fontSize={TITLE_SIZE}>Tank</text>
-          <g transform="translate(0, 20)">
+          <g transform="translate(0, 0)">
             <Thermometer // For the tank temperature
               svgX={0} 
               svgY={0} 
@@ -84,16 +84,17 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
               const isLongLine = i % 2 === 0;
               return (
                 <line
-                  key={i}
-                  x1={100}
-                  y1={y}
-                  x2={i === 5 ? 130 : isLongLine ? 120 : 110}
-                  y2={y}
-                  stroke="black"
-                  strokeWidth={2}
+                key={i}
+                x1={100}
+                y1={y}
+                x2={i === 5 ? 130 : isLongLine ? 120 : 110}
+                y2={y}
+                stroke="black"
+                strokeWidth={2}
                 />
               );
             })}
+            <text y={THERMOMETER_HEIGHT + 20} x={36} fontSize={TITLE_SIZE}>Tank</text>
           </g>
         </g>
       </g>

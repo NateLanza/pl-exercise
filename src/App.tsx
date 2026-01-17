@@ -24,16 +24,7 @@ function App() {
 
   return (
     <div className="App">
-      <p>Tank Temp: {systemState.tankTemp}°C</p>
-      <p>Solar Power: {systemState.solarPower} W</p>
-      <p>Solar Out Temp: {systemState.solarOutTemp}°C</p>
-      <p>Flow Rate: {systemState.flowRate} L/s</p>
-      <button onClick={() => {
-        // Advance the system by one second when the button is clicked
-        setSystemState(stepTankSystem(systemState, STEP));
-        setTime(time + STEP);
-      }}>Step</button>
-      <div style={{textAlign: 'right'}}>
+      <div style={{textAlign: 'right', marginTop: '100px', marginRight: '20px'}}>
         <SvgBase />
       </div>
     </div>
