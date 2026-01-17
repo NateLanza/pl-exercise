@@ -1,5 +1,6 @@
 import React from 'react';
 import { Thermometer } from './Thermometer';
+import { Slider } from './Slider';
 
 interface SvgBaseProps {
   // Add your props here
@@ -12,6 +13,19 @@ const LABEL_SIZE = 13;
 export const SvgBase: React.FC<SvgBaseProps> = (props) => {
   return (
     <svg width="300" height="500">
+      <Slider
+        x={1}
+        y={1}
+        value={50}
+        min={0}
+        max={100}
+        width={200}
+        height={20}
+        color="green"
+        onChange={(value) => {
+          console.log("Slider changed to: ", value);
+        }} 
+      />
       <g transform="translate(0, 150)">
         {/* Group for solar cell thermometer */}
         <g transform="translate(50, 0)">
