@@ -39,13 +39,16 @@ export const Thermometer: React.FC<ThermometerProps> = ({ svgX, svgY, width, hei
       <defs>
         <linearGradient id="thermometerGradient" x1="0%" y1="100%" x2="0%" y2="0%">
           <stop offset="0%" style={{ stopColor: 'blue', stopOpacity: 1 }} />
+          {/* Make the red more opaque as we go up in temp to redden the gradient */}
           <stop offset={percentFilled} style={{ stopColor: 'red', stopOpacity: percentFilled }} />
           <stop offset={percentFilled} style={{ stopColor: 'white', stopOpacity: 1 }} />
         </linearGradient>
       </defs>
-      <rect 
-        x={svgX}
-        y={svgY}
+      <rect
+        // To simulate becoming redder as we heat up, we draw a filled blue rectangle
+        // behind and make the red less opaque as we go up.
+        x={0}
+        y={0}
         width={width}
         height={height}
         rx={borderRadius}
@@ -53,8 +56,8 @@ export const Thermometer: React.FC<ThermometerProps> = ({ svgX, svgY, width, hei
         fill="blue"
       />
       <rect
-        x={svgX}
-        y={svgY}
+        x={0}
+        y={0}
         width={width}
         height={height}
         rx={borderRadius}
