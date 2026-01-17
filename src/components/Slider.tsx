@@ -82,7 +82,9 @@ export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min,
         fill='white' 
         stroke='black' 
         width={width + 50} 
-        height={height + 48} 
+        height={height + 48}
+        rx={5}
+        ry={5} 
       />
       <g transform="translate(15, 25)">
         <text width={width} textAnchor='middle' x={width / 2} y={-5} fontSize={TITLE_SIZE}>{title}</text>
