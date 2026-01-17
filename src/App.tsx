@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { SolarTankSystem, stepTankSystem } from './core/physics';
+import { SvgBase } from './components/SvgBase';
 
 const DEFAULT_TEMP: number = 0;
 const DEFAULT_POWER: number = 500; // Watts
@@ -32,6 +33,7 @@ function App() {
         setSystemState(stepTankSystem(systemState, STEP));
         setTime(time + STEP);
       }}>Step</button>
+      <SvgBase />
     </div>
   );
 }
