@@ -21,7 +21,7 @@ export type SolarTankSystem = {
   /** Current solar power input- user-defined */
   solarPower: Watts;
   /** Temperature of water leaving the solar cell- simulated */
-  solarOutTemp: degC;
+  cellTemp: degC;
   /** Flow rate of water through the solar cell- user-defined */
   flowRate: LPerSec;
   /** Mass of water in the tank- user-defined */
@@ -63,13 +63,13 @@ export function stepTankSystem(system: SolarTankSystem, seconds: number): SolarT
   // Mass flowing through the cell in this timestep
   const massFlow: kg = system.flowRate * seconds * DENSITY_H2O;
   const energyIn: Joules = system.solarPower * seconds; // Total energy absorbed over the time step
-  const solarOutTemp: degC = solarCellHeat(system.tankTemp, energyIn, massFlow);
-  const tempChange: degC = tankTempChange(system.tankTemp, system.tankMass, massFlow, solarOutTemp);
+  const cellTemp: degC = solarCellHeat(system.tankTemp, energyIn, massFlow);
+  const tempChange: degC = tankTempChange(system.tankTemp, system.tankMass, massFlow, cellTemp);
 
   return {
     tankTemp: system.tankTemp + tempChange,
     solarPower: system.solarPower,
-    solarOutTemp: solarOutTemp,
+    cellTemp: cellTemp,
     flowRate: system.flowRate,
     tankMass: system.tankMass,
   };

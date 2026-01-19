@@ -4,43 +4,53 @@ import { Slider } from './Slider';
 import { TITLE_SIZE, LABEL_SIZE, THERMOMETER_HEIGHT, WATER_COLOR, SOLAR_COLOR } from './constants';
 
 interface SvgBaseProps {
-  // Add your props here
+  /** Current power for the solar cell, set by user */
+  solarPower: number;
+  /** Current flow rate for the pump, set by user */
+  flowRate: number;
+  /** Current temperature of the solar cell */
+  cellTemp: number;
+  /** Current temperature of the water tank */
+  tankTemp: number;
+  /** Callback when solar power slider changes */
+  onSolarPowerChange: (value: number) => void;
+  /** Callback when flow rate slider changes */
+  onFlowRateChange: (value: number) => void;
 }
 
-export const SvgBase: React.FC<SvgBaseProps> = (props) => {
+export const SvgBase: React.FC<SvgBaseProps> = (
+  { solarPower, flowRate, cellTemp, tankTemp, onSolarPowerChange, onFlowRateChange }
+) => {
+
   return (
     <svg width="300" height="650">
       {/* Control sliders */}
-      <g>
+      <g transform='translate(-10, 0)'>
         <Slider
           x={50}
           y={0}
-          value={50}
+          value={solarPower}
           min={0}
-          max={1000}
+          max={10000}
           width={200}
           height={20}
           color={SOLAR_COLOR}
           title="Solar Cell Power"
           unit="W"
-          onChange={(value) => {
-            console.log("Slider changed to: ", value);
-          }} 
+          onChange={onSolarPowerChange}
         />
         <Slider
           x={50}
           y={75}
-          value={25}
-          min={1}
-          max={10}
+          value={flowRate}
+          min={0.1}
+          max={5}
           width={200}
           height={20}
           color={WATER_COLOR}
           title="Pump Flow Rate"
           unit="L/s"
-          onChange={(value) => {
-            console.log("Slider changed to: ", value);
-          }} 
+          onChange={onFlowRateChange}
         />
       </g>
       {/* Group for both thermometers */}
@@ -54,7 +64,7 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
             height={THERMOMETER_HEIGHT} 
             minTemp={0}
             maxTemp={100} 
-            currentTemp={45} 
+            currentTemp={cellTemp}
             borderRadius={10} 
           />
           <text y={THERMOMETER_HEIGHT + 20} x={13} fontSize={TITLE_SIZE}>Cell</text>
@@ -69,7 +79,7 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
               height={THERMOMETER_HEIGHT} 
               minTemp={0} 
               maxTemp={100} 
-              currentTemp={70} 
+              currentTemp={tankTemp}
               borderRadius={25} 
             />
             {/* Labels at 0 and 100 C */}
@@ -100,7 +110,7 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
       </g>
       {/* Group for cosmetic elements denoting pump, etc */}
       <g>
-        {/* The water flow path */}
+        {/* The water flow "pipe" */}
         <g transform="translate(200, 229)">
           <path d="
             M 0 0 
@@ -144,10 +154,16 @@ export const SvgBase: React.FC<SvgBaseProps> = (props) => {
         <line x1={173} y1={193} x2={173} y2={145} stroke="black" strokeWidth={2} />
         <path d="
           M 105 188
-          l -60 -40
+          l -70 -40
           l 0 -90
           l 5 0
         " stroke="black" strokeWidth={2} fill="transparent" />
+        {/* The returning "pipe" from cell to tank */}
+        <g transform='translate(101, 550)'>
+          <line x1={0} y1={0} x2={48} y2={0} stroke={WATER_COLOR} strokeWidth="8" />
+          <line x1={0} y1={4} x2={48} y2={4} stroke="black" strokeWidth="1" />
+          <line x1={0} y1={-4} x2={48} y2={-4} stroke="black" strokeWidth="1" />
+        </g>
       </g>
     </svg>
   );
