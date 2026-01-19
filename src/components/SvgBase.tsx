@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { Thermometer } from './Thermometer';
 import { Slider } from './Slider';
 import { TITLE_SIZE, LABEL_SIZE, THERMOMETER_HEIGHT, WATER_COLOR, SOLAR_COLOR } from './constants';
 
 interface SvgBaseProps {
+  /** SVG canvas width */
+  width: number;
+  /** SVG canvas height */
+  height: number;
+  /** Style for the SVG container */
+  style?: CSSProperties;
   /** Current power for the solar cell, set by user */
   solarPower: number;
   /** Current flow rate for the pump, set by user */
@@ -19,11 +25,11 @@ interface SvgBaseProps {
 }
 
 export const SvgBase: React.FC<SvgBaseProps> = (
-  { solarPower, flowRate, cellTemp, tankTemp, onSolarPowerChange, onFlowRateChange }
+  { solarPower, flowRate, cellTemp, tankTemp, onSolarPowerChange, onFlowRateChange, width, height, style }
 ) => {
 
   return (
-    <svg width="300" height="650">
+    <svg width={width} height={height} style={style} viewBox={`${300 - width} 0 ${width} ${height}`}>
       {/* Control sliders */}
       <g transform='translate(-10, 0)'>
         <Slider
