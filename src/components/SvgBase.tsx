@@ -62,58 +62,32 @@ export const SvgBase: React.FC<SvgBaseProps> = (
       </g>
       {/* Group for both thermometers */}
       <g transform="translate(0, 230)">
-        {/* Group for solar cell thermometer */}
-        <g transform="translate(50, 0)">
-          <Thermometer
-            svgX={0} 
-            svgY={0} 
-            width={50} 
-            height={THERMOMETER_HEIGHT} 
-            minTemp={0}
-            maxTemp={maxTemp} 
-            currentTemp={cellTemp}
-            borderRadius={10} 
-          />
-          <text y={THERMOMETER_HEIGHT + 20} x={13} fontSize={TITLE_SIZE}>Cell</text>
-        </g>
-        {/* Group for tank thermometer and scale */}
-        <g transform="translate(150, 0)">
-          <g transform="translate(0, 0)">
-            <Thermometer // For the tank temperature
-              svgX={0} 
-              svgY={0} 
-              width={100} 
-              height={THERMOMETER_HEIGHT} 
-              minTemp={0} 
-              maxTemp={maxTemp}
-              currentTemp={tankTemp}
-              borderRadius={25} 
-            />
-            {/* Labels at 0 and 100 C */}
-            <line x1={75} y1={0} x2={150} y2={1} stroke="black" strokeWidth={2} />
-            <text x={112} y={15} fontSize={LABEL_SIZE}>{maxTemp}°C</text>
-            <line x1={75} y1={THERMOMETER_HEIGHT} x2={150} y2={THERMOMETER_HEIGHT} stroke="black" strokeWidth={2} />
-            <text x={126} y={THERMOMETER_HEIGHT - 5} fontSize={LABEL_SIZE}>0°C</text>
-            {/* Lines marking 1/10 increments with longer lines at 1/5 increments */}
-            {Array.from({ length: 10 }).map((_, i) => {
-              if (i === 0) return null; // Skip the 0 line since we drew it above
-              const y = (THERMOMETER_HEIGHT / 10) * i;
-              const isLongLine = i % 2 === 0;
-              return (
-                <line
-                key={i}
-                x1={100}
-                y1={y}
-                x2={i === 5 ? 130 : isLongLine ? 120 : 110}
-                y2={y}
-                stroke="black"
-                strokeWidth={2}
-                />
-              );
-            })}
-            <text y={THERMOMETER_HEIGHT + 20} x={36} fontSize={TITLE_SIZE}>Tank</text>
-          </g>
-        </g>
+        {/* Solar cell thermometer */}
+        <Thermometer
+          svgX={50} 
+          svgY={0} 
+          width={50} 
+          height={THERMOMETER_HEIGHT} 
+          minTemp={0}
+          maxTemp={maxTemp} 
+          currentTemp={cellTemp}
+          borderRadius={10}
+          title="Cell"
+          axisLabels={false}
+          axisSide="left"
+        />
+        {/* Tank thermometer */}
+        <Thermometer // For the tank temperature
+          svgX={150} 
+          svgY={0} 
+          width={100} 
+          height={THERMOMETER_HEIGHT} 
+          minTemp={0} 
+          maxTemp={maxTemp}
+          currentTemp={tankTemp}
+          borderRadius={25}
+          title="Tank"
+        />
       </g>
       {/* Group for cosmetic elements denoting pump, etc */}
       <g>

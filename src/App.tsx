@@ -19,7 +19,7 @@ const STEP = .1; // seconds
 const MAX_TEMP = 105;
 
 // Styling constants
-const SVG_WIDTH = 270;
+const SVG_WIDTH = 300;
 const SVG_HEIGHT = 650;
 const PAGE_MARGIN = 20;
 /** Accounts for both the legend and the margins that Vega adds */
