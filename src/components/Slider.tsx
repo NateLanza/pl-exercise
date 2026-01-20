@@ -30,15 +30,7 @@ interface SliderProps {
   onChange: (value: number) => void;
 }
 
-function formatNumber(val: number): string {
-  if (Math.abs(val) >= 1000) {
-    return (val / 1000).toFixed(0) + 'k';
-  } else if (Math.abs(val) < .1 && Math.abs(val) > 0) {
-    return val.toFixed(2);
-  } else {
-    return val.toFixed(0);
-  }
-}
+
 
 /**
  * Adjustable SVG slider which can be used to control parameters.
@@ -56,6 +48,11 @@ export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min,
     setCurValue(newValue);
     onChange(newValue);
   }, [min, max, width, onChange]);
+
+  const formatNumber = useCallback((val: number): string => {
+    if (Math.abs(val) >= 10000) return (val / 1000).toFixed(0) + 'k';
+    return val.toFixed(decimals);
+  }, [decimals]);
 
   useEffect(() => {
     const { current: parent } = sliderParent;
@@ -106,7 +103,7 @@ export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min,
           x={width / 2} 
           y={height + 15} 
           fontSize={LABEL_SIZE}>
-            {curValue.toFixed(decimals !== undefined ? decimals : 1)} {unit}
+            {formatNumber(curValue)} {unit}
           </text>
         <text textAnchor='end' x={-4} y={height / 2 + 5} fontSize={LABEL_SIZE}>{formatNumber(min)}</text>
         <text x={width + 2} y={height / 2 + 5} fontSize={LABEL_SIZE}>{formatNumber(max)}</text>

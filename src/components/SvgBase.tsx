@@ -56,6 +56,7 @@ export const SvgBase: React.FC<SvgBaseProps> = (
           color={WATER_COLOR}
           title="Pump Flow Rate"
           unit="L/s"
+          decimals={2}
           onChange={onFlowRateChange}
         />
       </g>
