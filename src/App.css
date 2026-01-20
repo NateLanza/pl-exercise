@@ -1,3 +1,8 @@
+/* Hide the annoying vega plot menu */
+details[title="Click to view actions"] {
+  display: none;
+}
+
 .App {
   text-align: center;
 }

@@ -27,7 +27,10 @@ function App() {
   const [time, setTime] = useState<number>(0);
   const [playing, setPlaying] = useState<boolean>(false);
   const { width } = useWindowDimensions();
-  const [data, setData] = useState<VegaData>({values: []});
+  const [data, setData] = useState<VegaData>({values: [
+    {time: 0, temp: DEFAULT_TEMP, type: 'tank'},
+    {time: 0, temp: DEFAULT_TEMP, type: 'cell'},
+  ]});
 
   const [{tankTemp, solarPower, cellTemp, flowRate}, setSystemState] = useState<SolarTankSystem>({
     tankTemp: DEFAULT_TEMP,
