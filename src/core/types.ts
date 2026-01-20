@@ -11,11 +11,13 @@ export type LPerSec = number;
 /** 
  * A record of data recorded at a single point in time,
  * designed for rendering with Vega-Lite.
+ * This should record a time, a temperature, and whether it's
+ * the tank or cell temperature; Vega requires splitting these into separate records.
  */
 export type DataPoint = {
   time: number;
-  tankTemp: degC;
-  cellTemp: degC;
+  temp: degC;
+  type: 'tank' | 'cell';
 }
 
 /**

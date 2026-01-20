@@ -11,14 +11,17 @@ import { generateVegaSpec } from './core/generateVegaSpec';
 // Physics sim constants
 const DEFAULT_TEMP: number = 0;
 const DEFAULT_POWER: number = 1000; // Watts
-const DEFAULT_FLOW: number = 1; // L/s
+const DEFAULT_FLOW: number = .5; // L/s
 const DEFAULT_TANK_MASS: number = 1; // kg
 const STEP = .1; // seconds
+const RECORD_INTERVAL = .5; // seconds
 
 // Styling constants
 const SVG_WIDTH = 270;
 const SVG_HEIGHT = 650;
 const PAGE_MARGIN = 20;
+/** Accounts for both the legend and the margins that Vega adds */
+const CHART_MARGIN = 150;
 
 function App() {
   const [time, setTime] = useState<number>(0);
@@ -52,26 +55,31 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       if (!playing) return;
-      const newPoint: DataPoint = {time: 0, tankTemp: 0, cellTemp: 0};
+      const cellRecord: DataPoint = {time: 0, temp: 0, type: 'cell'};
+      const tankRecord: DataPoint = {time: 0, temp: 0, type: 'tank'};
+
       // Using function form so we don't have to put the values we're setting in the dependency array
       setSystemState((prevState) => {
         const result = stepTankSystem(prevState, STEP);
-        newPoint.tankTemp = result.tankTemp;
-        newPoint.cellTemp = result.cellTemp;
+        tankRecord.temp = result.tankTemp;
+        cellRecord.temp = result.cellTemp;
         return result;
       });
       setTime((prevTime) => {
         const result = prevTime + STEP;
-        newPoint.time = result;
+        tankRecord.time = result;
+        cellRecord.time = result;
         return result;
       });
       setData((prevData) => ({
-        values: [...prevData.values, newPoint],
+        values: [...prevData.values, tankRecord, cellRecord],
       }));
     }, STEP * 1000); // Convert to milliseconds
 
     return () => clearInterval(interval);
-  }, [playing, setSystemState, setData, setTime]);
+  }, [playing, setSystemState, setData, setTime, ]);
+
+  const chartWidth = width - SVG_WIDTH - PAGE_MARGIN * 2 - CHART_MARGIN;
 
   return (
     <div className="App" style={{margin: PAGE_MARGIN}}>
@@ -80,10 +88,10 @@ function App() {
           position: 'absolute', 
           top: 0, 
           left: 0, 
-          width: (width - SVG_WIDTH - PAGE_MARGIN * 2) + 'px'
+          width: chartWidth + 'px'
         }}>
           <VegaEmbed 
-            spec={generateVegaSpec(data)}
+            spec={generateVegaSpec(chartWidth, SVG_HEIGHT, data, time)}
           />
         </span>
         <span
