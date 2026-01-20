@@ -50,6 +50,7 @@ export const Thermometer: React.FC<ThermometerProps> = ({ svgX, svgY, width, hei
   const minMaxLineLength = axisLabels ? 100 : SCALE_3_LENGTH;
   /** Scale x direction multiplier; reverses scale for left axis */
   const scaleDir = axisSide === 'right' ? 1 : -1;
+  const halfWidth = width / 2;
 
   return (
     <g transform={`translate(${svgX}, ${svgY})`}>
@@ -62,10 +63,10 @@ export const Thermometer: React.FC<ThermometerProps> = ({ svgX, svgY, width, hei
         </linearGradient>
       </defs>
       {/* Axis scale tick lines group */}
-      <g transform={`translate(${width / 2}, 0)`}>
+      <g transform={`translate(${halfWidth}, 0)`}>
         {/* Labels at 0 and 100 C */}
-        <line x1={0} y1={0} x2={scaleDir * (width / 2 + minMaxLineLength)} y2={1} stroke="black" strokeWidth={2} />
-        <line x1={0} y1={THERMOMETER_HEIGHT} x2={scaleDir * (width / 2 + minMaxLineLength)} y2={THERMOMETER_HEIGHT} stroke="black" strokeWidth={2} />
+        <line x1={0} y1={0} x2={scaleDir * (halfWidth + minMaxLineLength)} y2={1} stroke="black" strokeWidth={2} />
+        <line x1={0} y1={THERMOMETER_HEIGHT} x2={scaleDir * (halfWidth + minMaxLineLength)} y2={THERMOMETER_HEIGHT} stroke="black" strokeWidth={2} />
         {/* Lines marking 1/10 increments with longer lines at 1/5 increments */}
         {Array.from({ length: 10 }).map((_, i) => {
           if (i === 0) return null; // Skip the 0 line since we drew it above
@@ -77,10 +78,10 @@ export const Thermometer: React.FC<ThermometerProps> = ({ svgX, svgY, width, hei
             x1={0}
             y1={y}
             x2={(i === 5 
-              ? width / 2 + SCALE_3_LENGTH 
+              ? halfWidth + SCALE_3_LENGTH 
               : isLongLine 
-                ? width / 2 + SCALE_2_LENGTH 
-                : width / 2 + SCALE_1_LENGTH
+                ? halfWidth + SCALE_2_LENGTH 
+                : halfWidth + SCALE_1_LENGTH
             ) * scaleDir}
             y2={y}
             stroke="black"
@@ -116,7 +117,8 @@ export const Thermometer: React.FC<ThermometerProps> = ({ svgX, svgY, width, hei
         <text x={width + LABEL_X_OFFSET * scaleDir} y={15} fontSize={LABEL_SIZE}>{maxTemp}°C</text>
         <text x={width + LABEL_X_OFFSET * scaleDir} y={THERMOMETER_HEIGHT - 5} fontSize={LABEL_SIZE}>{minTemp}°C</text>
       </>)}
-      <text y={THERMOMETER_HEIGHT + 20} x={width / 2 - 15} fontSize={TITLE_SIZE}>{title}</text>
+      <text y={THERMOMETER_HEIGHT + 20} x={halfWidth} textAnchor='middle' fontWeight={600} fontSize={TITLE_SIZE}>{currentTemp.toFixed(1)}°C</text>
+      <text y={THERMOMETER_HEIGHT + 40} x={halfWidth} textAnchor='middle' fontSize={TITLE_SIZE}>{title}</text>
     </g>
   );
 };
