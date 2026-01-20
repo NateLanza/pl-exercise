@@ -80,7 +80,7 @@ export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min,
     return () => {
       dragBehavior.on('drag', null);
     };
-  }, [max, min, onChange, width]);
+  }, [max, min, onChange, width, handleDrag]);
 
   return (
     // Lots of little adjustments to positioning... this could be cleaned up

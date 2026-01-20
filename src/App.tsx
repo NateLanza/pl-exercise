@@ -1,13 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './App.css';
-import { SolarTankSystem, stepTankSystem } from './core/physics';
+import { stepTankSystem } from './core/physics';
 import { SvgBase } from './components/SvgBase';
 import { PlayButton } from './components/PlayButton';
 import useWindowDimensions from './core/useWindowDimensions';
+import { SolarTankSystem, DataPoint, VegaData } from './core/types';
+import { VegaEmbed } from 'react-vega';
+import { generateVegaSpec } from './core/generateVegaSpec';
 
 // Physics sim constants
 const DEFAULT_TEMP: number = 0;
-const DEFAULT_POWER: number = 50; // Watts
+const DEFAULT_POWER: number = 1000; // Watts
 const DEFAULT_FLOW: number = 1; // L/s
 const DEFAULT_TANK_MASS: number = 1; // kg
 const STEP = .1; // seconds
@@ -21,6 +24,7 @@ function App() {
   const [time, setTime] = useState<number>(0);
   const [playing, setPlaying] = useState<boolean>(false);
   const { width } = useWindowDimensions();
+  const [data, setData] = useState<VegaData>({values: []});
 
   const [{tankTemp, solarPower, cellTemp, flowRate}, setSystemState] = useState<SolarTankSystem>({
     tankTemp: DEFAULT_TEMP,
@@ -47,23 +51,47 @@ function App() {
   // Main simulation loop
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log('tick', playing);
       if (!playing) return;
-      setSystemState((prevState) => stepTankSystem(prevState, STEP));
-      setTime((prevTime) => prevTime + STEP);
+      const newPoint: DataPoint = {time: 0, tankTemp: 0, cellTemp: 0};
+      // Using function form so we don't have to put the values we're setting in the dependency array
+      setSystemState((prevState) => {
+        const result = stepTankSystem(prevState, STEP);
+        newPoint.tankTemp = result.tankTemp;
+        newPoint.cellTemp = result.cellTemp;
+        return result;
+      });
+      setTime((prevTime) => {
+        const result = prevTime + STEP;
+        newPoint.time = result;
+        return result;
+      });
+      setData((prevData) => ({
+        values: [...prevData.values, newPoint],
+      }));
     }, STEP * 1000); // Convert to milliseconds
 
     return () => clearInterval(interval);
-  }, [playing]);
+  }, [playing, setSystemState, setData, setTime]);
 
   return (
     <div className="App" style={{margin: PAGE_MARGIN}}>
       <div style={{position: 'relative', height: `${SVG_HEIGHT}px`}}>
+        <span style={{
+          position: 'absolute', 
+          top: 0, 
+          left: 0, 
+          width: (width - SVG_WIDTH - PAGE_MARGIN * 2) + 'px'
+        }}>
+          <VegaEmbed 
+            spec={generateVegaSpec(data)}
+          />
+        </span>
         <span
-          style={{position: 'absolute', top: 0, left: ((width - 3 * PAGE_MARGIN) - SVG_WIDTH)}}
+          style={{position: 'absolute', top: 0, right: 0}}
         >
-          <div style={{display: 'flex', justifyContent: 'center', marginBottom: '10px'}}>
-            <PlayButton playing={playing} onToggle={() => setPlaying(!playing)} />
+          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px'}}>
+              <PlayButton playing={playing} onToggle={() => setPlaying(!playing)} />
+              <h1 style={{marginLeft: '20px'}}>{time.toFixed(1)}s</h1>
           </div>
           <SvgBase 
             tankTemp={tankTemp} 
@@ -74,8 +102,6 @@ function App() {
             onFlowRateChange={setFlowRate}
             width={SVG_WIDTH}
             height={SVG_HEIGHT}
-            // I don't know why we need 3 * PAGE_MARGIN here to align properly; the div appears to be
-            // less than width - 2 * PAGE_MARGIN wide for some reason.
           />
         </span>
       </div>
