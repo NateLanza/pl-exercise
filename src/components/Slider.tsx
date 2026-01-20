@@ -32,9 +32,9 @@ interface SliderProps {
 
 function formatNumber(val: number): string {
   if (Math.abs(val) >= 1000) {
-    return (val / 1000).toFixed(1) + 'k';
-  } else if (Math.abs(val) <= 10) {
-    return val.toFixed(1);
+    return (val / 1000).toFixed(0) + 'k';
+  } else if (Math.abs(val) < .1 && Math.abs(val) > 0) {
+    return val.toFixed(2);
   } else {
     return val.toFixed(0);
   }
@@ -85,6 +85,7 @@ export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min,
   return (
     // Lots of little adjustments to positioning... this could be cleaned up
     <g transform={`translate(${x - 1}, ${y + 1})`}>
+      {/* Slider box */}
       <rect
         x={0}
         y={0}
@@ -96,7 +97,8 @@ export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min,
         rx={5}
         ry={5} 
       />
-      <g transform="translate(25, 25)">
+      {/* Contents of the slider box */}
+      <g transform="translate(32, 25)">
         <text width={width} textAnchor='middle' x={width / 2} y={-5} fontSize={TITLE_SIZE}>{title}</text>
         <text 
           width={width} 
@@ -106,7 +108,7 @@ export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min,
           fontSize={LABEL_SIZE}>
             {curValue.toFixed(decimals !== undefined ? decimals : 1)} {unit}
           </text>
-        <text x={-20} y={height / 2 + 5} fontSize={LABEL_SIZE}>{formatNumber(min)}</text>
+        <text textAnchor='end' x={-4} y={height / 2 + 5} fontSize={LABEL_SIZE}>{formatNumber(min)}</text>
         <text x={width + 2} y={height / 2 + 5} fontSize={LABEL_SIZE}>{formatNumber(max)}</text>
         <rect
           ref={sliderParent}
