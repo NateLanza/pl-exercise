@@ -7,6 +7,7 @@ import useWindowDimensions from './core/useWindowDimensions';
 import { SolarTankSystem, DataPoint, VegaData } from './core/types';
 import { VegaEmbed } from 'react-vega';
 import { generateVegaSpec } from './core/generateVegaSpec';
+import { InfoBox } from './components/InfoBox';
 
 // Physics sim constants
 const DEFAULT_TEMP: number = 0;
@@ -15,14 +16,15 @@ const DEFAULT_FLOW: number = .5; // L/s
 const DEFAULT_TANK_MASS: number = 1; // kg
 const STEP = .1; // seconds
 /** Controls both max temp of scales and the y-axis domain */
-export const MAX_TEMP = 105;
+const MAX_TEMP = 105;
 
 // Styling constants
-export const SVG_WIDTH = 270;
-export const SVG_HEIGHT = 650;
+const SVG_WIDTH = 270;
+const SVG_HEIGHT = 650;
 const PAGE_MARGIN = 20;
 /** Accounts for both the legend and the margins that Vega adds */
-const CHART_MARGIN = 150;
+const CHART_XMARGIN = 150;
+const HEADER_HEIGHT = 90;
 
 function App() {
   const [time, setTime] = useState<number>(0);
@@ -83,7 +85,7 @@ function App() {
     return () => clearInterval(interval);
   }, [playing, setSystemState, setData, setTime, ]);
 
-  const chartWidth = width - SVG_WIDTH - PAGE_MARGIN * 2 - CHART_MARGIN;
+  const chartWidth = width - SVG_WIDTH - PAGE_MARGIN * 2 - CHART_XMARGIN;
 
   return (
     <div className="App" style={{margin: PAGE_MARGIN}}>
@@ -94,14 +96,21 @@ function App() {
           left: 0, 
           width: chartWidth + 'px'
         }}>
+          <InfoBox height={HEADER_HEIGHT} />
           <VegaEmbed 
-            spec={generateVegaSpec(chartWidth, SVG_HEIGHT, data, time, MAX_TEMP)}
+            spec={generateVegaSpec(chartWidth, SVG_HEIGHT - HEADER_HEIGHT, data, time, MAX_TEMP)}
           />
         </span>
         <span
           style={{position: 'absolute', top: 0, right: 0}}
         >
-          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px'}}>
+          <div style={{
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            marginBottom: '10px', 
+            height: `${HEADER_HEIGHT}px`
+          }}>
               <PlayButton playing={playing} onToggle={() => setPlaying(!playing)} />
               <h1 style={{marginLeft: '20px'}}>{time.toFixed(1)}s</h1>
           </div>
@@ -112,6 +121,9 @@ function App() {
             flowRate={flowRate}
             onSolarPowerChange={setSolarPower}
             onFlowRateChange={setFlowRate}
+            width={SVG_WIDTH}
+            height={SVG_HEIGHT}
+            maxTemp={MAX_TEMP}
           />
         </span>
       </div>

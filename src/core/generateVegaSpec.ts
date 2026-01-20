@@ -1,6 +1,10 @@
 import { VegaData } from "./types";
 
-const TIME_WINDOW = 30;
+/** 
+ * Pixels of width per second used in the time window.
+ * The wider the plot, the more x time is shown.
+ */
+const X_PIXELS_PER_SECOND = 20;
 
 /**
  * Generates a spec for the VegaEmbed line chart, which plots 
@@ -13,6 +17,7 @@ const TIME_WINDOW = 30;
  * @returns Vega specification object
  */
 export function generateVegaSpec(width: number, height: number, data: VegaData, currentTime: number, maxTemp: number) {
+  const timeWindow = width / X_PIXELS_PER_SECOND;
   return {
     width,
     height,
@@ -25,14 +30,14 @@ export function generateVegaSpec(width: number, height: number, data: VegaData, 
       // Calculate the time in the past for better x-axis labeling
       {calculate: `datum.time - ${currentTime}`, as: 'pastTime'},
       // Filter to the time window
-      {filter: `datum.pastTime >= -${TIME_WINDOW}`},
+      {filter: `datum.pastTime >= -${timeWindow}`},
     ],
     encoding: {
       x: {
         field: 'pastTime', 
         type: 'quantitative', 
         title: 'Time in Past (s)', 
-        scale: {domain: [-TIME_WINDOW, 0]}
+        scale: {domain: [-timeWindow, 0]}
       },
       y: {
         field: 'temp', 
