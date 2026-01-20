@@ -5,9 +5,14 @@ const TIME_WINDOW = 30;
 /**
  * Generates a spec for the VegaEmbed line chart, which plots 
  * tank and cell temperatures over time.
- * @param data 
+ * @param data VegaData containing the data points to plot
+ * @param currentTime Current simulation time, for x-axis calculation
+ * @param maxTemp Maximum temperature for the y-axis domain
+ * @param width Width of the chart, not including margins and legend
+ * @param height Height of the chart
+ * @returns Vega specification object
  */
-export function generateVegaSpec(width: number, height: number,data: VegaData, currentTime: number) {
+export function generateVegaSpec(width: number, height: number, data: VegaData, currentTime: number, maxTemp: number) {
   return {
     width,
     height,
@@ -34,7 +39,7 @@ export function generateVegaSpec(width: number, height: number,data: VegaData, c
         axis: {orient: 'right'}, 
         type: 'quantitative', 
         title: 'Temperature (°C)',
-        scale: {domain: [0, 100]},
+        scale: {domain: [0, maxTemp]},
       },
       color: {field: 'type', legend: {title: 'Temperature of', orient: 'left'}},
     },

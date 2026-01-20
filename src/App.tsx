@@ -14,11 +14,12 @@ const DEFAULT_POWER: number = 1000; // Watts
 const DEFAULT_FLOW: number = .5; // L/s
 const DEFAULT_TANK_MASS: number = 1; // kg
 const STEP = .1; // seconds
-const RECORD_INTERVAL = .5; // seconds
+/** Controls both max temp of scales and the y-axis domain */
+export const MAX_TEMP = 105;
 
 // Styling constants
-const SVG_WIDTH = 270;
-const SVG_HEIGHT = 650;
+export const SVG_WIDTH = 270;
+export const SVG_HEIGHT = 650;
 const PAGE_MARGIN = 20;
 /** Accounts for both the legend and the margins that Vega adds */
 const CHART_MARGIN = 150;
@@ -94,7 +95,7 @@ function App() {
           width: chartWidth + 'px'
         }}>
           <VegaEmbed 
-            spec={generateVegaSpec(chartWidth, SVG_HEIGHT, data, time)}
+            spec={generateVegaSpec(chartWidth, SVG_HEIGHT, data, time, MAX_TEMP)}
           />
         </span>
         <span
@@ -111,8 +112,6 @@ function App() {
             flowRate={flowRate}
             onSolarPowerChange={setSolarPower}
             onFlowRateChange={setFlowRate}
-            width={SVG_WIDTH}
-            height={SVG_HEIGHT}
           />
         </span>
       </div>

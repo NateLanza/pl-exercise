@@ -2,12 +2,9 @@ import React, { CSSProperties } from 'react';
 import { Thermometer } from './Thermometer';
 import { Slider } from './Slider';
 import { TITLE_SIZE, LABEL_SIZE, THERMOMETER_HEIGHT, WATER_COLOR, SOLAR_COLOR } from './constants';
+import { MAX_TEMP, SVG_HEIGHT, SVG_WIDTH } from '../App';
 
 interface SvgBaseProps {
-  /** SVG canvas width */
-  width: number;
-  /** SVG canvas height */
-  height: number;
   /** Style for the SVG container */
   style?: CSSProperties;
   /** Current power for the solar cell, set by user */
@@ -25,11 +22,11 @@ interface SvgBaseProps {
 }
 
 export const SvgBase: React.FC<SvgBaseProps> = (
-  { solarPower, flowRate, cellTemp, tankTemp, onSolarPowerChange, onFlowRateChange, width, height, style }
+  { solarPower, flowRate, cellTemp, tankTemp, onSolarPowerChange, onFlowRateChange, style }
 ) => {
 
   return (
-    <svg width={width} height={height} style={style} viewBox={`${300 - width} 0 ${width} ${height}`}>
+    <svg width={SVG_WIDTH} height={SVG_HEIGHT} style={style} viewBox={`${300 - SVG_WIDTH} 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}>
       {/* Control sliders */}
       <g transform='translate(-10, 0)'>
         <Slider
@@ -70,7 +67,7 @@ export const SvgBase: React.FC<SvgBaseProps> = (
             width={50} 
             height={THERMOMETER_HEIGHT} 
             minTemp={0}
-            maxTemp={100} 
+            maxTemp={MAX_TEMP} 
             currentTemp={cellTemp}
             borderRadius={10} 
           />
@@ -85,13 +82,13 @@ export const SvgBase: React.FC<SvgBaseProps> = (
               width={100} 
               height={THERMOMETER_HEIGHT} 
               minTemp={0} 
-              maxTemp={100} 
+              maxTemp={MAX_TEMP}
               currentTemp={tankTemp}
               borderRadius={25} 
             />
             {/* Labels at 0 and 100 C */}
             <line x1={75} y1={0} x2={150} y2={1} stroke="black" strokeWidth={2} />
-            <text x={112} y={15} fontSize={LABEL_SIZE}>100°C</text>
+            <text x={112} y={15} fontSize={LABEL_SIZE}>{MAX_TEMP}°C</text>
             <line x1={75} y1={THERMOMETER_HEIGHT} x2={150} y2={THERMOMETER_HEIGHT} stroke="black" strokeWidth={2} />
             <text x={126} y={THERMOMETER_HEIGHT - 5} fontSize={LABEL_SIZE}>0°C</text>
             {/* Lines marking 1/10 increments with longer lines at 1/5 increments */}
