@@ -15,7 +15,7 @@ The solar cell power and flow rate are both adjustable, and visualizations show 
 ## Physical Assumptions
 
 - The pump is perfectly efficient and loses no energy to heat (ie does not heat the water).
-- The increase in temperature of the water due to pressure increase after pumping is negligible (and neglected in this simulation).
+- The increase in temperature of the water due to pressure/enthalpy increase after pumping is negligible (and neglected in this simulation).
 - The solar cell is perfectly efficient and all energy is transferred into the water.
 - The solar cell is absorbing 10kw from the sun and it's possible to reduce this amount (presumably by adjusting a cover over the cell).
 - The water circuit is pre-primed with water, so the tank loses no volume to it.
