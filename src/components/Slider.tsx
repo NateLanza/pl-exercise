@@ -34,6 +34,7 @@ interface SliderProps {
 
 /**
  * Adjustable SVG slider which can be used to control parameters.
+ * Must be used within an SVG element.
  * @returns 
  */
 export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min, max, color, title, unit, decimals, onChange }) => {
