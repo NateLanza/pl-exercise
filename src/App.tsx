@@ -12,11 +12,11 @@ import { InfoBox } from './components/InfoBox';
 // Physics sim constants
 const DEFAULT_TEMP: number = 0;
 const DEFAULT_POWER: number = 1000; // Watts
-const DEFAULT_FLOW: number = .5; // L/s
+const DEFAULT_FLOW: number = .25; // L/s
 const DEFAULT_TANK_MASS: number = 1; // kg
 const STEP = .1; // seconds
-/** Controls both max temp of scales and the y-axis domain */
-const MAX_TEMP = 105;
+/** Controls max temp of scales, the y-axis domain, and tank temp at which the sim finishes */
+const MAX_TEMP = 100;
 
 // Styling constants
 const SVG_WIDTH = 300;
@@ -92,12 +92,12 @@ function App() {
 
   return (
     <div className="App" style={{margin: PAGE_MARGIN}}>
-      <div style={{position: 'relative', height: `${SVG_HEIGHT}px`}}>
+      <div style={{position: 'relative', height: `${SVG_HEIGHT + HEADER_HEIGHT}px`}}>
         <span style={{
           position: 'absolute', 
           top: 0, 
           left: 0, 
-          width: chartWidth + 'px'
+          width: chartWidth + CHART_XMARGIN + 'px'
         }}>
           <InfoBox height={HEADER_HEIGHT} type={finished ? 'success' : 'info'} />
           <VegaEmbed 

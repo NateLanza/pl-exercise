@@ -1,17 +1,21 @@
 import React from 'react';
 
 interface PlayButtonProps {
+  /** When true, shows a pause button, otherwise shows a play button */
   playing: boolean;
+  /** Callback when the button is clicked */
   onToggle: () => void;
+  /** Whether the button is disabled */
+  disabled: boolean;
 }
 
 const SIZE = 60;
 
-export const PlayButton: React.FC<PlayButtonProps> = ({playing, onToggle}) => {
+export const PlayButton: React.FC<PlayButtonProps> = ({playing, onToggle, disabled}) => {
   return (
     <button 
       style={{
-        backgroundColor: playing ? '#ffb731' : '#62ff3b',
+        backgroundColor: disabled ? '#aaa' : (playing ? '#ffb731' : '#62ff3b'),
         border: 'none',
         borderRadius: `${SIZE / 2}px`,
         height: `${SIZE}px`,
