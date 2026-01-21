@@ -135,9 +135,6 @@ export const Slider: React.FC<SliderProps> = ({ x, y, value, width, height, min,
           
           return (
             <g key={i}>
-              {/* Top tick */}
-              {/* <line x1={tickX} y1={1} x2={tickX} y2={tickHeight} stroke="black" strokeWidth={1} /> */}
-              {/* Bottom tick */}
               <line x1={tickX} y1={height} x2={tickX} y2={height - tickHeight} stroke="black" strokeWidth={1} />
             </g>
           );
