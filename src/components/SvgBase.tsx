@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react';
 import { Thermometer } from './Thermometer';
 import { Slider } from './Slider';
-import { TITLE_SIZE, LABEL_SIZE, THERMOMETER_HEIGHT, WATER_COLOR, SOLAR_COLOR } from './constants';
+import { THERMOMETER_HEIGHT, WATER_COLOR, SOLAR_COLOR } from './constants';
 
 interface SvgBaseProps {
   width: number;

@@ -1,54 +1,23 @@
-# Heat Transfer Simulation
+# Hydrothermal Heat Transfer Simulation
+
+This is a web app which simulates a water tank—pump—solar cell system, written for a job application coding exercise. 
+In the simulation, water is pumped from a tank, heated in a solar cell, and returned to the tank, thereby heating the tank.
+The solar cell power and flow rate are both adjustable, and visualizations show the temperature of the system at the tank and cell output. 
+
+## Installation and Running
+
+1. Make sure you have [Node.js and NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed on your system.
+2. Pull this git repo into a folder.
+3. Run `npm i` in the repo folder; this should install all required dependencies into `/node_modules`.
+4. Run `npm start` in the repo folder to launch the web app and simulation.
+5. If a browser window does not automatically open, go to `localhost:3000`. If port 3000 is occupied on your machine, the console should indicate the alternative port used.
 
 ## Physical Assumptions
 
-- The pump is perfectly efficient and loses no energy to heat.
+- The pump is perfectly efficient and loses no energy to heat (ie does not heat the water).
 - The increase in temperature of the water due to pressure increase after pumping is negligible (and neglected in this simulation).
 - The solar cell is perfectly efficient and all energy is transferred into the water.
+- The solar cell is absorbing 10kw from the sun and it's possible to reduce this amount (presumably by adjusting a cover over the cell).
 - The water circuit is pre-primed with water, so the tank loses no volume to it.
 - The entire system is closed and loses no heat to the outside environment.
-
-# Package Info
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- High pressure capacity of the pipes allows output water temperature from the cell to exceed 100C; the resulting high-temperature or even supercritical fluid still mixes back into the tank normally.
