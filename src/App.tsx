@@ -34,6 +34,7 @@ function App() {
     {time: 0, temp: DEFAULT_TEMP, type: 'tank'},
     {time: 0, temp: DEFAULT_TEMP, type: 'cell'},
   ]});
+  const [finished, setFinished] = useState<boolean>(false);
 
   const [{tankTemp, solarPower, cellTemp, flowRate}, setSystemState] = useState<SolarTankSystem>({
     tankTemp: DEFAULT_TEMP,
@@ -60,7 +61,7 @@ function App() {
   // Main simulation loop
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!playing) return;
+      if (!playing || finished) return;
       const cellRecord: DataPoint = {time: 0, temp: 0, type: 'cell'};
       const tankRecord: DataPoint = {time: 0, temp: 0, type: 'tank'};
 
@@ -80,10 +81,12 @@ function App() {
       setData((prevData) => ({
         values: [...prevData.values, tankRecord, cellRecord],
       }));
+
+      if (tankRecord.temp >= MAX_TEMP) setFinished(true);
     }, STEP * 1000); // Convert to milliseconds
 
     return () => clearInterval(interval);
-  }, [playing, setSystemState, setData, setTime, ]);
+  }, [playing, setSystemState, setData, setTime, setFinished, finished]);
 
   const chartWidth = width - SVG_WIDTH - PAGE_MARGIN * 2 - CHART_XMARGIN;
 
@@ -96,7 +99,7 @@ function App() {
           left: 0, 
           width: chartWidth + 'px'
         }}>
-          <InfoBox height={HEADER_HEIGHT} />
+          <InfoBox height={HEADER_HEIGHT} type={finished ? 'success' : 'info'} />
           <VegaEmbed 
             spec={generateVegaSpec(chartWidth, SVG_HEIGHT - HEADER_HEIGHT, data, time, MAX_TEMP)}
           />
@@ -111,7 +114,7 @@ function App() {
             marginBottom: '10px', 
             height: `${HEADER_HEIGHT}px`
           }}>
-              <PlayButton playing={playing} onToggle={() => setPlaying(!playing)} />
+              <PlayButton playing={!finished && playing} onToggle={() => setPlaying(!playing)} disabled={finished} />
               <h1 style={{marginLeft: '20px'}}>{time.toFixed(1)}s</h1>
           </div>
           <SvgBase 
